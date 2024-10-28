@@ -228,6 +228,7 @@
       <h1>Hello, {{ title | uppercase }}</h1>
       <p>Congratulations! Your app is running. 🎉</p>
       <p *ngIf="title.length < 5">This a short title</p>
+      <p>My pipe 2^10 : {{ 2 | exponentialStrength: '10' }} </p>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">

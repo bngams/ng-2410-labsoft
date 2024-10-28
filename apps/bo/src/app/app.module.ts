@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ExponentialStrengthPipe } from '../../../fo/src/app/pipes/exponential-strength.pipe';
+import { ExponentialStrengthPipe } from '@aelion/utils';
 
 @NgModule({
   declarations: [
@@ -12,7 +12,7 @@ import { ExponentialStrengthPipe } from '../../../fo/src/app/pipes/exponential-s
   imports: [
     BrowserModule, // => CommonModule => UppercasePipe, NgIf
     AppRoutingModule,
-    ExponentialStrengthPipe
+    ExponentialStrengthPipe // import as a module because standalone
   ],
   providers: [],
   bootstrap: [AppComponent]

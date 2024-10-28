@@ -1,7 +1,7 @@
 import { NgIf, UpperCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ExponentialStrengthPipe } from "./pipes/exponential-strength.pipe";
+import { ExponentialStrengthPipe } from "@aelion/utils";
 
 @Component({
   selector: 'app-root',
