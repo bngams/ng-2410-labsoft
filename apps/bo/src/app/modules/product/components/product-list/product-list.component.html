@@ -1,0 +1,22 @@
+<div class="container">
+  <!-- *ngFor="let p of products" -->
+  <!-- [product]="p" => @Input product -->
+  <ng-container [ngSwitch]="loadMode">
+    <ng-container *ngSwitchCase="loadModes.REQUEST_OBSERVABLE">
+      <app-product-card *ngFor="let p of products$ | async " [product]="p">
+      </app-product-card>
+    </ng-container>
+    <ng-container *ngSwitchCase="loadModes.REQUEST">
+      <app-product-card *ngFor="let p of products" [product]="p">
+      </app-product-card>
+    </ng-container>
+    <ng-container *ngSwitchCase="loadModes.STORE">
+      <app-product-card *ngFor="let p of productsService.products" [product]="p">
+      </app-product-card>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <app-product-card *ngFor="let p of products" [product]="p">
+      </app-product-card>
+    </ng-container>
+  </ng-container>
+</div>

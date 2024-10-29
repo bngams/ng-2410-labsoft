@@ -7,12 +7,12 @@ import { Menu } from '../models/menu-nav';
     ul.horizontal {
       list-style-type: none;
       display: flex;
-      gap: 2;
+      gap: 2rem;
     }
   `,
   template: `
     <nav *ngIf="menu">
-      <ul [ngClass]="{'horizontal': menu.type == 'nav'}">
+      <ul [ngClass]="{'horizontal': menu.type === 'nav'}">
         <li *ngFor="let item of menu.items">
           <!-- [routerLinkActive]="'active' vs routerLinkActive="active" -->
           <a [routerLink]="[item.path]" [routerLinkActive]="'active'">

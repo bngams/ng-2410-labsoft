@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, OnInit } from '@angular/core';
-import { Menu } from '../../../../../../libs/ui/src/lib/models/menu-nav';
 
 @Component({
   selector: 'app-header',
@@ -29,7 +29,7 @@ import { Menu } from '../../../../../../libs/ui/src/lib/models/menu-nav';
 })
 
 export class HeaderComponent implements OnInit {
-  menuNav = { type: 'nav', items: [ { title: 'Home', path: '/home'} ] };
+  menuNav = { type: 'nav', items: [ { title: 'Home', path: '/home'}, { title: 'Products', path: '/products'} ] };
 
   constructor() { }
 
