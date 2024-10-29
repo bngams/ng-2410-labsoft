@@ -7,7 +7,7 @@ export type MenuItem = {
 export type MenuItems = MenuItem[];
 
 export type Menu = {
-  type: 'nav'| 'sidebar'
+  type: string;
   items: MenuItems
 };
 

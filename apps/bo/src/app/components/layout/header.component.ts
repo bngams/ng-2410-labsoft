@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Menu } from '../../../../../../libs/ui/src/lib/models/menu-nav';
 
 @Component({
   selector: 'app-header',

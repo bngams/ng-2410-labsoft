@@ -8,7 +8,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { HomeComponent } from './pages/home/home.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderComponent } from './components/layout/header.component';
-import { UIModule } from './ui.module';
+import { UIModule } from '@aelion/ui';
 
 @NgModule({
   declarations: [
