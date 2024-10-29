@@ -12,4 +12,13 @@ import { ExponentialStrengthPipe } from "@aelion/utils";
 })
 export class AppComponent {
   title = 'fo';
+
+  /**
+   * I do :
+   */
+  do(){}
+
+  use(){
+    this.do()
+  }
 }
