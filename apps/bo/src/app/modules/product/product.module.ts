@@ -10,7 +10,6 @@ import { UIModule } from '@aelion/ui';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { productsReducer } from './states/products.reducers';
-import { collectionReducer } from './states/collection.reducer';
 
 
 
@@ -27,8 +26,7 @@ import { collectionReducer } from './states/collection.reducer';
     ReactiveFormsModule,
     UIModule,
     StoreModule.forFeature('productsFeature', {
-      products: productsReducer,
-      collection: collectionReducer,
+      products: productsReducer
     })
   ],
 })
