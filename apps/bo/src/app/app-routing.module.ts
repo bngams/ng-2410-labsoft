@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
@@ -9,13 +9,13 @@ const routes: Routes = [
   {
     path: 'products',
     loadChildren: () => import('./modules/product/product.module')
-      .then(result => result.ProductModule)
+      .then(result => result.ProductModule),
   },
   { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules } )],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

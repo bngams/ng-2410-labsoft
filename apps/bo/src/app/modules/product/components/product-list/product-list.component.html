@@ -10,8 +10,16 @@
       <app-product-card *ngFor="let p of products" [product]="p">
       </app-product-card>
     </ng-container>
-    <ng-container *ngSwitchCase="loadModes.STORE">
+    <ng-container *ngSwitchCase="loadModes.NGRX_STORE">
+      <app-product-card *ngFor="let p of products$ | async" [product]="p">
+      </app-product-card>
+    </ng-container>
+    <ng-container *ngSwitchCase="loadModes.SERVICE_STORE">
       <app-product-card *ngFor="let p of productsService.products" [product]="p">
+      </app-product-card>
+    </ng-container>
+    <ng-container *ngSwitchCase="loadModes.SERVICE_STORE_BEHAV">
+      <app-product-card *ngFor="let p of productsService.products$| async" [product]="p">
       </app-product-card>
     </ng-container>
     <ng-container *ngSwitchDefault>

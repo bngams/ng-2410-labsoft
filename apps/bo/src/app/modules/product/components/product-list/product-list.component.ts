@@ -5,18 +5,27 @@ import { PRODUCTS_MOCK } from '../../mocks/products.mock';
 import { ProductService } from '../../services/product.service';
 import { Observable } from 'rxjs';
 import { ProductApiResponse } from '../../models/products-api-response';
+import { Store } from '@ngrx/store';
 
 enum LOAD_MODE {
   MOCK,
   REQUEST,
-  STORE,
+  SERVICE_STORE,
+  SERVICE_STORE_BEHAV,
+  NGRX_STORE,
   REQUEST_OBSERVABLE
 }
 
+type LocalState = {
+  productsFeature: {
+    products: readonly Product[]
+  }
+}
+
 @Component({
-  selector: 'fo-product-list',
+  selector: 'bo-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent implements OnInit {
   @ViewChildren(ProductCardComponent) cards!: QueryList<ProductCardComponent>;
@@ -26,14 +35,14 @@ export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
 
-  products$!: Observable<Product[]>;
+  products$!: Observable<readonly Product[]>;
 
   loading = false;
-  loadMode: LOAD_MODE = LOAD_MODE.MOCK;
+  loadMode: LOAD_MODE = LOAD_MODE.NGRX_STORE;
   loadModes = LOAD_MODE;
 
   // inject class ProductService
-  constructor(public productsService: ProductService) {
+  constructor(private store: Store<LocalState>, public productsService: ProductService) {
     // better to init in ngInit method (lifecycle hooks)
     // this.products = productsService.products;
   }
@@ -43,18 +52,25 @@ export class ProductListComponent implements OnInit {
     this.initListeners();
   }
 
+  appendProduct(product: Product) {
+    this.products.push(product);
+  }
+
   // TODO: can be a global method from a common parent class
   initData(): void {
     switch (this.loadMode) {
       case LOAD_MODE.MOCK:
         this.loadFromMocks();
         break;
-      case LOAD_MODE.STORE:
-        this.loadFromService(); // like a "store" service
+      case LOAD_MODE.SERVICE_STORE:
+        this.loadFromService(); // like a "SERVICE_STORE" service
         break;
       case LOAD_MODE.REQUEST_OBSERVABLE:
         this.loadProductsAsObservable();
         break;
+      case LOAD_MODE.NGRX_STORE:
+          this.loadFromNgrxStore();
+          break;
       case LOAD_MODE.REQUEST:
       default:
         this.loadProducts();
@@ -77,7 +93,11 @@ export class ProductListComponent implements OnInit {
 
   listenProducts$FromService(): void {
     // listener
-    this.productsService.products$.subscribe( p => console.log("Product form subject", p));
+    this.productsService.products$.subscribe( p => console.log("Subscribe product service subject", p));
+  }
+
+  loadFromNgrxStore(): void {
+    this.products$ = this.store.select(state => state.productsFeature.products );
   }
 
   loadFromMocks(): void {
@@ -112,7 +132,7 @@ export class ProductListComponent implements OnInit {
     this.products$ = this.productsService.getProductsAsObservableProducts();
   }
 
-  // products are loaded in service instance (like a store)
+  // products are loaded in service instance (like a SERVICE_STORE)
   loadFromService(): void {
     this.productsService.loadProducts();
   }

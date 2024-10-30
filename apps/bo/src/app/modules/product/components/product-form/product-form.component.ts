@@ -1,13 +1,16 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormGroup, Validators } from '@angular/forms';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
+import { Store } from '@ngrx/store';
+import { ProductsActions } from '../../states/products.actions';
 
 enum SUBMIT_MODE {
   OUTPUT,
   SERVICE_ATTR,
   SERVICE_SUBJECT,
-  SERVICE_BEHAV_SUBJECT
+  SERVICE_BEHAV_SUBJECT,
+  NGRX_STORE
 }
 
 enum FORM_MODE {
@@ -28,14 +31,17 @@ export type ControlsOf<T extends Record<string, any>> = {
   : FormControl<T[K]>;
 };
 
+// vs.
+// export type ProductFormType = {};
+
 @Component({
-  selector: 'fo-product-form',
+  selector: 'bo-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss']
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements OnInit {
 
-  private submitMode: SUBMIT_MODE = SUBMIT_MODE.OUTPUT;
+  private submitMode: SUBMIT_MODE = SUBMIT_MODE.NGRX_STORE;
   private formMode: FORM_MODE = FORM_MODE.UNTYPED;
 
   @Output()
@@ -46,7 +52,11 @@ export class ProductFormComponent {
   // with type => (since angular 14/15)
   productForm!: FormGroup | UntypedFormGroup | FormGroup<ControlsOf<Product>>;
 
-  constructor(private productService: ProductService) { }
+  constructor(private store: Store, private productService: ProductService) {}
+
+  ngOnInit(){
+    this.initForm();
+  }
 
   initForm() {
     switch (this.formMode) {
@@ -76,7 +86,7 @@ export class ProductFormComponent {
   initFormUntyped() {
     this.productForm = new UntypedFormGroup({
       title: new FormControl('', {validators: [Validators.required, Validators.minLength(3)]}),
-      price: new FormControl(0, {validators: [Validators.required, Validators.min(1)]})
+      price: new FormControl(0, {validators: [Validators.required, Validators.min(1)] })
     });
   }
 
@@ -85,11 +95,12 @@ export class ProductFormComponent {
     const product: Product = this.productForm.value;
 
     // debugger vs console.log(product)
+    console.log('submit product', product);
 
     switch (this.submitMode) {
       case SUBMIT_MODE.OUTPUT:
         // with @Output()
-        this.submitWithOuput(product);
+        this.submitWithOutput(product);
         break;
       case SUBMIT_MODE.SERVICE_SUBJECT:
           // with service (@Injectable)
@@ -101,6 +112,10 @@ export class ProductFormComponent {
         // product Behaviour Subject attribute
         this.submitWithServiceBehaviorSubject(product);
         break;
+      case SUBMIT_MODE.NGRX_STORE:
+          // with ngrx store
+          this.submitWithNgRxStore(product);
+          break;
       case SUBMIT_MODE.SERVICE_ATTR:
       default:// with service (@Injectable)
         // product attribute
@@ -109,7 +124,13 @@ export class ProductFormComponent {
     }
   }
 
-  private submitWithOuput(product: Product): void {
+  // TODO: complete dispatch / reducer to impact collecton
+  private submitWithNgRxStore(product: Product): void {
+    this.store.dispatch(ProductsActions.addProduct({ product }));
+  }
+
+  private submitWithOutput(product: Product): void {
+    console.log('submitWithOuput');
     this.productSubmit.emit(product);
   }
 

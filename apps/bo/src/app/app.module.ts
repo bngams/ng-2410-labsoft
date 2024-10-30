@@ -10,6 +10,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { HeaderComponent } from './components/layout/header.component';
 import { UIModule } from '@aelion/ui';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
     AppRoutingModule,
     ExponentialStrengthPipe, // import as a module because standalone
     //...MATERIAL_MODULES // if only barrel otherwise UIModule
-    UIModule //
+    UIModule, //
+    StoreModule.forRoot()
   ],
   providers: [
     provideAnimationsAsync(),
